@@ -1,0 +1,19 @@
+2026-08-03 09:15:11 INFO  PaymentController - Payment request received
+
+2026-08-03 09:15:12 INFO  PaymentService - Initiating payment transaction
+
+2026-08-03 09:15:13 INFO  PaymentService - Calling Inventory Service
+
+2026-08-03 09:15:18 WARN  InventoryClient - Request taking longer than expected
+
+2026-08-03 09:15:22 ERROR TimeoutException - Inventory Service timeout after 5000 ms
+
+2026-08-03 09:15:22 ERROR PaymentService - Payment processing failed
+
+2026-08-03 09:15:23 INFO  RetryHandler - Retry attempt 1
+
+2026-08-03 09:15:28 ERROR TimeoutException - Retry failed
+
+2026-08-03 09:15:29 ERROR PaymentController - Returning HTTP 500
+
+2026-08-03 09:15:30 INFO  TraceId=PAY-34234
