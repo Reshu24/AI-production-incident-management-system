@@ -1,7 +1,5 @@
 # AI-Assisted Production Incident Management System
 
-[![CI](https://github.com/Reshu24/AI-production-incident-management-system/actions/workflows/ci.yml/badge.svg)](https://github.com/Reshu24/AI-production-incident-management-system/actions/workflows/ci.yml)
-
 A full-stack incident management system that helps support teams triage production incidents faster. New incidents are matched against a knowledge base of past incidents using TF-IDF and cosine similarity, automatically classified and routed to the owning team, and application logs can be analysed by a local LLM (Ollama) to suggest a root cause.
 
 ## Screenshots
