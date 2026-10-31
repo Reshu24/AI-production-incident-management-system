@@ -72,3 +72,36 @@ jobs:
           context: .
           push: ${{ github.ref == 'refs/heads/main' }}
           tags: ghcr.io/reshu24/incident-api:latest
+  load-test:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start app and database
+        run: docker compose up -d --build
+
+      - name: Wait for the API
+        run: |
+          for i in $(seq 1 60); do
+            code=$(curl -s -o /dev/null -w "%{http_code}" -X POST http://localhost:8080/auth/login \
+              -H "Content-Type: application/json" \
+              -d '{"userName":"admin1","password":"admin123"}' || true)
+            if [ "$code" = "200" ]; then echo "API is up"; exit 0; fi
+            echo "waiting... ($code)"; sleep 3
+          done
+          docker compose logs app
+          exit 1
+
+      - uses: grafana/setup-k6-action@v1
+
+      - name: Run k6 load test
+        run: k6 run load-test/incidents.js
+
+      - name: Show app logs on failure
+        if: failure()
+        run: docker compose logs app
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down

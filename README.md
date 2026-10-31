@@ -59,6 +59,7 @@ flowchart LR
 | Database | PostgreSQL 16 |
 | AI / matching | Ollama (optional), TF-IDF, cosine similarity |
 | Build and test | Maven, JUnit, REST Assured |
+| Performance testing | Grafana k6 |
 | DevOps | Docker, Docker Compose, GitHub Actions |
 
 ## Run with Docker
@@ -131,4 +132,53 @@ Run them locally with Maven:
 mvn verify
 ```
 
-GitHub Actions runs the same tests on every push and pull request against a PostgreSQL service container, and builds the Docker image.
+GitHub Actions runs the same tests on every push and pull request against a PostgreSQL service container, builds the Docker image, and runs the k6 load test against the application started with Docker Compose.
+
+## Load testing with Grafana k6
+
+[Grafana k6](https://grafana.com/docs/k6/latest/) is an open-source load testing tool where tests are written in JavaScript. The script in [`load-test/incidents.js`](load-test/incidents.js) simulates concurrent support engineers using the API.
+
+**What the test does**
+
+1. Logs in once as `admin1` (in k6's `setup()` stage) and shares the JWT with all virtual users
+2. Each virtual user repeatedly calls:
+    - `GET /api/incidents` (list incidents)
+    - `GET /api/incidents/match?description=...` (TF-IDF similarity search, the most CPU-heavy read endpoint)
+3. Checks that every response is `200` and pauses 1 second between iterations
+
+**Load profile**
+
+| Stage | Duration | Virtual users |
+|---|---|---|
+| Ramp up | 10 s | 0 to 10 |
+| Hold | 30 s | 10 |
+| Ramp down | 5 s | 10 to 0 |
+
+**Pass/fail thresholds**
+
+The run fails, and so does the CI job, if either threshold is crossed:
+
+| Metric | Threshold |
+|---|---|
+| `http_req_failed` | below 1% of requests |
+| `http_req_duration` | p(95) below 500 ms |
+
+**Run it locally**
+
+Start the application first (`docker compose up --build`), then install k6 (`winget install k6` on Windows, `brew install k6` on macOS) and run:
+
+```bash
+k6 run load-test/incidents.js
+```
+
+To point it at another environment:
+
+```bash
+k6 run -e BASE_URL=http://localhost:8080 load-test/incidents.js
+```
+
+At the end k6 prints a summary with request counts, latency percentiles and a pass or fail mark for each threshold.
+
+**In CI**
+
+The `load-test` job in [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs after the build and tests pass. It starts the app and database with `docker compose up`, waits until the login endpoint responds, runs the k6 script, and then tears everything down. Because it uses the same `docker-compose.yml` as local development, it also checks that the containerised setup works from a clean checkout.
