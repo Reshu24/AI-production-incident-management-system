@@ -8,6 +8,28 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: incidentdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: admin123
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d incidentdb"
+          --health-interval 5s
+          --health-timeout 3s
+          --health-retries 10
+
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/incidentdb
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: admin123
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+
     steps:
       - uses: actions/checkout@v4
 
