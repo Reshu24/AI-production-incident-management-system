@@ -7,27 +7,27 @@ A full-stack incident management system that helps support teams triage producti
 ### Dashboard
 Live counts of incidents by status and severity, plus the size of the knowledge base.
 
-![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard](https://github.com/Reshu24/AI-production-incident-management-system/blob/2dee12fdb9ba06b296ed77c36d47765101df3a51/op%20screenshots/dashboard%20page.png)
 
 ### Incidents
 Searchable incident list with severity badges, service and creation time.
 
-![Incidents](docs/screenshots/incidents.png)
+![Incidents](https://github.com/Reshu24/AI-production-incident-management-system/blob/2dee12fdb9ba06b296ed77c36d47765101df3a51/op%20screenshots/incidets.png)
 
 ### AI Log Analyzer
 Pick an environment and service, and the system analyses the logs, summarises the failure, suggests a root cause, routes the incident to a team with a confidence score, and lists similar historical incidents.
 
-![AI Log Analyzer](docs/screenshots/ai-log-analyzer.png)
+![AI Log Analyzer](https://github.com/Reshu24/AI-production-incident-management-system/blob/2dee12fdb9ba06b296ed77c36d47765101df3a51/op%20screenshots/AI%20analysis.png)
 
 ### Knowledge Base
 Past incidents with root cause and resolution, used for similarity matching.
 
-![Knowledge Base](docs/screenshots/knowledge-base.png)
+![Knowledge Base](https://github.com/Reshu24/AI-production-incident-management-system/blob/2dee12fdb9ba06b296ed77c36d47765101df3a51/op%20screenshots/knowledge.png)
 
 ### Ownership Mapping
 Maps incident categories to the responsible team and contact, used by automatic routing.
 
-![Ownership Mapping](docs/screenshots/ownership.png)
+![Ownership Mapping](https://github.com/Reshu24/AI-production-incident-management-system/blob/2dee12fdb9ba06b296ed77c36d47765101df3a51/op%20screenshots/ownership.png)
 
 ## Features
 
