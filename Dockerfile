@@ -1,14 +1,16 @@
-# Step 1 — start with Java 17 on lightweight Linux
-FROM eclipse-temurin:17-jdk-alpine
+# ---- Stage 1: build the JAR ----
+FROM maven:3.9-eclipse-temurin-21 AS build
+WORKDIR /workspace
+COPY pom.xml .
+RUN mvn -q dependency:go-offline
+COPY src src
+RUN mvn -q package -DskipTests
 
-# Step 2 — set working directory inside container
+# ---- Stage 2: run it ----
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
-
-# Step 3 — copy the built jar into the container
-COPY target/incident-0.0.1-SNAPSHOT.jar app.jar
-
-# Step 4 — expose port 8080 so outside world can reach it
+RUN addgroup -S app && adduser -S app -G app
+COPY --from=build /workspace/target/*.jar app.jar
+USER app
 EXPOSE 8080
-
-# Step 5 — run the app when container starts
 ENTRYPOINT ["java", "-jar", "app.jar"]
