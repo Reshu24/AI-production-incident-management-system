@@ -31,3 +31,19 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Secrets and local config ###
+.env
+*.env.local
+
+### Logs and OS files ###
+*.log
+.DS_Store
+Thumbs.db
+
+### Terraform (for the AWS step later) ###
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+crash.log
