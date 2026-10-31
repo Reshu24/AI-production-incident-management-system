@@ -29,6 +29,7 @@ jobs:
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: admin123
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: dGVzdC1zZWNyZXQta2V5LWZvci1jaS1vbmx5LTEyMzQ1Njc4OTA=
 
     steps:
       - uses: actions/checkout@v4
