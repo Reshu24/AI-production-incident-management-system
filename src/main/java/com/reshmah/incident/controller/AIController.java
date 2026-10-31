@@ -2,7 +2,6 @@ package com.reshmah.incident.controller;
 
 import com.reshmah.incident.ai.AIAnalysisService;
 import com.reshmah.incident.dto.AIAnalysisResponse;
-import com.reshmah.incident.dto.TriageResult;
 import com.reshmah.incident.dto.AIAnalysisRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
