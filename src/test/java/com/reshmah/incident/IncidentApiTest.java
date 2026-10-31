@@ -35,6 +35,7 @@ class IncidentApiTest {
                 .when()
                 .post("/auth/login")
                 .then()
+                .log().all()
                 .statusCode(200)
                 .body("token", not(emptyOrNullString()))
                 .extract().path("token");
